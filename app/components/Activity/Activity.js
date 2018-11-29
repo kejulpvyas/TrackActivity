@@ -20,146 +20,146 @@ headerLeft: null
 }
 
 constructor(props) {
-    super(props);
-    this.state = {
-      timeElasped: null,
-      timerRunning: false,
-      startTime: null,
-      trackSelectionValue: '',
-      activityName1: '',
-      activityName2: '',
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      routeCoordinates: [],
-      distanceTravelled: 0,
-      prevLatLng: {},
-      coordinate: new AnimatedRegion({
-        latitude: LATITUDE,
-        longitude: LONGITUDE
-      })
+super(props);
+this.state = {
+timeElasped: null,
+timerRunning: false,
+startTime: null,
+trackSelectionValue: '',
+activityName1: '',
+activityName2: '',
+latitude: LATITUDE,
+longitude: LONGITUDE,
+routeCoordinates: [],
+distanceTravelled: 0,
+prevLatLng: {},
+coordinate: new AnimatedRegion({
+latitude: LATITUDE,
+longitude: LONGITUDE
+})
 
-    };
+};
 this.onStartPress = this.onStartPress.bind(this);
 this.onLapPress = this.onLapPress.bind(this);
 }
 
 componentDidMount() {
-  const { coordinate } = this.state;
-  this.watchID = navigator.geolocation.watchPosition(
-    position => {
-      const { coordinate, routeCoordinates, distanceTravelled } = this.state;
-      const { latitude, longitude } = position.coords;
+const { coordinate } = this.state;
+this.watchID = navigator.geolocation.watchPosition(
+position => {
+const { coordinate, routeCoordinates, distanceTravelled } = this.state;
+const { latitude, longitude } = position.coords;
 
-      const newCoordinate = {
-        latitude,
-        longitude
-      };
+const newCoordinate = {
+latitude,
+longitude
+};
 
-      if (Platform.OS === "android") {
-        if (this.marker) {
-          this.marker._component.animateMarkerToCoordinate(
-            newCoordinate,
-            500
-          );
-        }
-      } else {
-        coordinate.timing(newCoordinate).start();
-      }
-
-      this.setState({
-        latitude,
-        longitude,
-        routeCoordinates: routeCoordinates.concat([newCoordinate]),
-        distanceTravelled:
-          distanceTravelled + this.calcDistance(newCoordinate),
-        prevLatLng: newCoordinate
-      });
-    },
-    error => console.log(error),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-  );
+if (Platform.OS === "android") {
+if (this.marker) {
+this.marker._component.animateMarkerToCoordinate(
+newCoordinate,
+500
+);
+}
+} else {
+coordinate.timing(newCoordinate).start();
 }
 
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID);
-  }
-  componentWillMount() {
-    navigator.geolocation.getCurrentPosition(
-      position => { },
-      error => alert(error.message),
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000
-      }
-    );
-    const { navigation } = this.props;
-    this.setState({
-      trackSelectionValue: navigation.getParam('trackSelection'),
-      timerRunning: false
-    })
-    this.onStartPress();
-    this.setState({
-      activityName1: 'Stop Activity'
-    })
-  }
+this.setState({
+latitude,
+longitude,
+routeCoordinates: routeCoordinates.concat([newCoordinate]),
+distanceTravelled:
+distanceTravelled + this.calcDistance(newCoordinate),
+prevLatLng: newCoordinate
+});
+},
+error => console.log(error),
+{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+);
+}
 
-  calcDistance = newLatLng => {
-    const { prevLatLng } = this.state;
-    return haversine(prevLatLng, newLatLng) || 0;
-  };
+componentWillUnmount() {
+navigator.geolocation.clearWatch(this.watchID);
+}
+componentWillMount() {
+navigator.geolocation.getCurrentPosition(
+position => { },
+error => alert(error.message),
+{
+enableHighAccuracy: true,
+timeout: 20000,
+maximumAge: 1000
+}
+);
+const { navigation } = this.props;
+this.setState({
+trackSelectionValue: navigation.getParam('trackSelection'),
+timerRunning: false
+})
+this.onStartPress();
+this.setState({
+activityName1: 'Stop Activity'
+})
+}
+
+calcDistance = newLatLng => {
+const { prevLatLng } = this.state;
+return haversine(prevLatLng, newLatLng) || 0;
+};
 
 getMapRegion = () => ({
-  latitude: this.state.latitude,
-  longitude: this.state.longitude,
-  latitudeDelta: LATITUDE_DELTA,
-  longitudeDelta: LONGITUDE_DELTA
+latitude: this.state.latitude,
+longitude: this.state.longitude,
+latitudeDelta: LATITUDE_DELTA,
+longitudeDelta: LONGITUDE_DELTA
 });
 onStartPress() {
-  if(this.state.activityName1 == "Done Activity"){
-    return;
-  }
-  // check if clock is running, then stop
-  if (this.state.timerRunning) {
-    clearInterval(this.interval);
-    this.setState({
-      timerRunning: false,
-      activityName1: 'Done Activity',
-      activityName2: 'Reset Activity'
-    });
-    return;
-  }
-  this.setState({
-    startTime: new Date(),
-    activityName1: 'Stop Activity',
-    activityName2: ''
-  });
-  this.interval = setInterval(() => {
-    this.setState({
-      timeElasped: new Date() - this.state.startTime,
-      timerRunning: true,
-    });
-  }, 30);
+if(this.state.activityName1 == "Done Activity"){
+return;
+}
+// check if clock is running, then stop
+if (this.state.timerRunning) {
+clearInterval(this.interval);
+this.setState({
+timerRunning: false,
+activityName1: 'Done Activity',
+activityName2: 'Reset Activity'
+});
+return;
+}
+this.setState({
+startTime: new Date(),
+activityName1: 'Stop Activity',
+activityName2: ''
+});
+this.interval = setInterval(() => {
+this.setState({
+timeElasped: new Date() - this.state.startTime,
+timerRunning: true,
+});
+}, 30);
 }
 
 onLapPress() {
-  // Reset timer
-  if(this.state.activityName2 == "Cancel Activity"){
-    this.props.navigation.goBack();
-    return;
-  }
-  if (!this.state.timerRunning) {
-    this.setState({
-      timeElasped: new Date(),
-      activityName1: 'Start Activity',
-      activityName2: 'Cancel Activity'
-    });
-    return;
-  }
-  const lap = this.state.timeElasped;
-  this.setState({
-    startTime: new Date(),
-  });
+// Reset timer
+if(this.state.activityName2 == "Cancel Activity"){
+this.props.navigation.goBack();
+return;
+}
+if (!this.state.timerRunning) {
+this.setState({
+timeElasped: new Date(),
+activityName1: 'Start Activity',
+activityName2: 'Cancel Activity'
+});
+return;
+}
+const lap = this.state.timeElasped;
+this.setState({
+startTime: new Date(),
+});
 }
 // create start/stop buttons
 startStopButton() {
@@ -192,28 +192,28 @@ style={this.state.activityName2 ? styles.button : null}
 }
 render(){
 return(
-  <View style={styles.container}>
-  <MapView
-    style={styles.map}
-    showUserLocation
-    followUserLocation
-    loadingEnabled
-    region={this.getMapRegion()}
-  >
-    <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
-    <Marker.Animated 
-      ref={marker => {
-        this.marker = marker;
-      }}
-      coordinate={this.state.coordinate} />
-  </MapView>
-  <View style={styles.buttonContainer}>
-    <TouchableOpacity style={[styles.bubble, styles.btn]}>
-      <Text style={styles.bottomBarContent}>
-        {parseFloat(this.state.distanceTravelled).toFixed(2)} km
-      </Text>
-    </TouchableOpacity>
-  </View>
+<View style={styles.container}>
+<MapView
+style={styles.map}
+showUserLocation
+followUserLocation
+loadingEnabled
+region={this.getMapRegion()}
+>
+<Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
+<Marker.Animated
+ref={marker => {
+this.marker = marker;
+}}
+coordinate={this.state.coordinate} />
+</MapView>
+<View style={styles.buttonContainer}>
+<TouchableOpacity style={[styles.bubble, styles.btn]}>
+<Text style={styles.bottomBarContent}>
+{parseFloat(this.state.distanceTravelled).toFixed(2)} miles
+</Text>
+</TouchableOpacity>
+</View>
 <View>
 <Text>Your Activity : {this.state.trackSelectionValue}</Text>
 </View>
