@@ -11,6 +11,9 @@ import Login from './app/components/Login/Login';
 import SignUp from './app/components/SignUp/SignUp';
 import WelcomeScreen from './app/components/WelcomeScreen/WelcomeScreen';
 import Activity from './app/components/Activity/Activity';
+import Records from './app/components/Records/Records';
+import RecordDetails from './app/components/RecordDetails/RecordDetails';
+
 import {
   createStackNavigator,
   createDrawerNavigator,
@@ -30,6 +33,12 @@ const appNavigator = createStackNavigator({
   },
   Activity: {
     screen: Activity,
+  },
+  Records: {
+    screen: Records,
+  },
+  RecordDetails:{
+    screen: RecordDetails,
   }
 }, {
   initialRouteName: 'Login',

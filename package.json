@@ -10,11 +10,13 @@
     "firebase": "^5.0.3",
     "haversine": "^1.1.0",
     "minutes-seconds-milliseconds": "^1.0.3",
+    "moment": "^2.22.2",
     "native-base": "^2.8.1",
     "react": "16.6.1",
     "react-native": "0.57.5",
     "react-native-gesture-handler": "^1.0.9",
     "react-native-maps": "^0.22.1",
+    "react-native-search-filter": "^0.1.4",
     "react-native-stopwatch-timer": "0.0.20",
     "react-native-timer-countdown": "^2.0.3",
     "react-navigation": "^3.0.0"
