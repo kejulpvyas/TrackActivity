@@ -13,6 +13,7 @@ import WelcomeScreen from './app/components/WelcomeScreen/WelcomeScreen';
 import Activity from './app/components/Activity/Activity';
 import Records from './app/components/Records/Records';
 import RecordDetails from './app/components/RecordDetails/RecordDetails';
+import ListDetails from './app/components/ListDetails/ListDetails';
 
 import {
   createStackNavigator,
@@ -39,6 +40,9 @@ const appNavigator = createStackNavigator({
   },
   RecordDetails:{
     screen: RecordDetails,
+  },
+  ListDetails:{
+    screen: ListDetails,
   }
 }, {
   initialRouteName: 'Login',
