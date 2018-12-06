@@ -5,19 +5,14 @@ import firebase from 'firebase';
 import formatTime from 'minutes-seconds-milliseconds';
 import MapView, { Marker, AnimatedRegion, Polyline } from "react-native-maps";
 import haversine from 'haversine';
+//import geolib from 'geolib';
 import moment from 'moment';
 //import Geolocation from 'react-native-geolocation-service';
-const LATITUDE = 29.95539;
-const LONGITUDE = 78.07513;
+const LATITUDE = 40.743678;
+const LONGITUDE = -74.177988;
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
-
 export default class Activity extends Component {
-
-static navigationOptions = {
-title: 'Activity Screen',
-headerLeft: null
-}
 
 constructor(props) {
         super(props);
@@ -37,12 +32,13 @@ constructor(props) {
             prevLatLng: {},
             coordinate: new AnimatedRegion({
                 latitude: LATITUDE,
-                longitude: LONGITUDE
+                longitude: LONGITUDE,
             })
 
         };
 this.onStartPress = this.onStartPress.bind(this);
 this.onLapPress = this.onLapPress.bind(this);
+
 }
 
 componentDidMount() {
@@ -58,20 +54,23 @@ componentDidMount() {
             } = this.state;
             const {
                 latitude,
-                longitude
+                longitude,
+                speed
             } = position.coords;
 
             const newCoordinate = {
                 latitude,
-                longitude
+                longitude,
+                speed
             };
             if(this.state.activityName1 == "Stop Activity"){
                 coordinate.timing(newCoordinate).start();
                 this.setState({
                     latitude,
                     longitude,
+                    speed : position.coords.speed < 0 ? 0 : Math.round(position.coords.speed),
                     routeCoordinates: routeCoordinates.concat([newCoordinate]),
-                    distanceTravelled: distanceTravelled + this.calcDistance(newCoordinate),
+                    distanceTravelled: (distanceTravelled + this.calcDistance(newCoordinate)),
                     prevLatLng: newCoordinate
                 });
             }
@@ -89,7 +88,8 @@ componentWillUnmount() {
 }
 componentWillMount() {
     navigator.geolocation.getCurrentPosition(
-        position => {},
+        position => {
+        },
         error => alert(error.message), {
             enableHighAccuracy: true,
             timeout: 20000,
@@ -115,20 +115,45 @@ calcDistance = newLatLng => {
     const {
         prevLatLng
     } = this.state;
-    return haversine(prevLatLng, newLatLng) || 0;
-};
+    return haversine(prevLatLng, newLatLng,{unit: 'mile'}) || 0;
 
+};
+calcAvgSpeed = () => {
+    var arr = formatTime(this.state.timeElasped).split(':')
+    var TotalTime=parseInt(arr[0]) + (parseInt(arr[1]) / 60) + (parseInt(arr[2]) / 3600)
+    return ( 
+       ((this.state.distanceTravelled.toFixed(2)) / (TotalTime.toFixed(2))) + ' mph'
+    
+    )
+
+};
+// speedCounter = newLatLng => {
+//     const {
+//         prevLatLng
+//     } = this.state;
+   
+//    if(prevLatLng.latitude != undefined && prevLatLng.longitude != undefined && prevLatLng.tempTime != undefined)
+//    { 
+//    return(geolib.getSpeed(
+//         {lat: prevLatLng.latitude, lng: prevLatLng.longitude, time: prevLatLng.tempTime},
+//         {lat: newLatLng.latitude, lng: newLatLng.longitude, time: newLatLng.tempTime},
+//         {unit: 'mph'}
+//     ));
+//    }
+
+//     }
 getMapRegion = () => ({
     latitude: this.state.latitude,
     longitude: this.state.longitude,
     latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
+    longitudeDelta: LONGITUDE_DELTA,
+    speed:this.state.speed
 });
 onStartPress() {
     const {navigate} = this.props.navigation;
     var userID = this.state.UID;
-if(this.state.activityName1 == "Done Activity"){
-    AlertIOS.alert(
+    if(this.state.activityName1 == "Done Activity"){
+        AlertIOS.alert(
         'Do you want to save this?',
         '',
         [
@@ -146,7 +171,9 @@ if(this.state.activityName1 == "Done Activity"){
                         TotalDistance: this.state.distanceTravelled,
                         EndDateTime:moment().format('lll'),
                         StartDateTime:this.state.StartDateTime,
-                        Activity:this.state.trackSelectionValue
+                        Activity:this.state.trackSelectionValue,
+                        timeElasped:formatTime(this.state.timeElasped),
+                        AvgSpeed:this.calcAvgSpeed()
                     }).then(function (response) {
                         alert("Your Activity has been saved !");
                         navigate("WelcomeScreen", {
@@ -164,15 +191,16 @@ if(this.state.activityName1 == "Done Activity"){
       return;
 }
 // check if clock is running, then stop
-if (this.state.timerRunning) {
-    clearInterval(this.interval);
-    this.setState({
-        timerRunning: false,
-        activityName1: 'Done Activity',
-        activityName2: 'Reset Activity'
-    });
-    return;
-}
+   
+        if (this.state.timerRunning) {
+            clearInterval(this.interval);
+            this.setState({
+                timerRunning: false,
+                activityName1: 'Done Activity',
+                activityName2: 'Reset Activity',
+            });
+            return;
+        }
 this.setState({
     startTime: new Date(),
     activityName1: 'Stop Activity',
@@ -198,7 +226,8 @@ onLapPress() {
             timeElasped: new Date(),
             activityName1: 'Start Activity',
             activityName2: 'Cancel Activity',
-            distanceTravelled: 0
+            distanceTravelled: 0,
+            speed:0
         });
         return;
     }
@@ -256,12 +285,21 @@ onLapPress() {
         <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.bubble, styles.btn]}>
         <Text style={styles.bottomBarContent}>
-        {parseFloat(this.state.distanceTravelled).toFixed(2)} miles
+        Total Distance :{parseFloat(this.state.distanceTravelled).toFixed(2)} miles
         </Text>
         </TouchableOpacity>
         </View>
-        <View>
-        <Text>Your Activity : {this.state.trackSelectionValue}</Text>
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity style={[styles.bubble, styles.btn]}>
+        <Text style={styles.bottomBarContent}>
+        Current Speed : {(this.state.speed)} mph
+        </Text>
+        </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity style={[styles.bubble, styles.btn]}>
+        <Text style={styles.bottomBarContent}>Your Activity : {this.state.trackSelectionValue}</Text>
+        </TouchableOpacity>
         </View>
         <View style={styles.header}>
         <View style={styles.timerWrapper}>

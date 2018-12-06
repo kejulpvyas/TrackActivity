@@ -6,10 +6,6 @@ import { List, ListItem, SearchBar } from "react-native-elements";
 //import { createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 
 export default class ListDetails extends Component {
-    static navigationOptions = {
-        title: 'Activity Record Details Screen'
-        //headerLeft: null
-        }
     constructor() {
         super();
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })

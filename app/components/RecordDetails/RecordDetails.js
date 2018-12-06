@@ -6,10 +6,6 @@ import { List, ListItem, SearchBar } from "react-native-elements";
 //import { createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 
 export default class RecordDetails extends Component {
-    static navigationOptions = {
-        title: 'Activity Record Details Screen',
-        //headerLeft: null
-        }
     constructor() {
         super();
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
@@ -49,11 +45,12 @@ export default class RecordDetails extends Component {
         for (var i = 0; i < keys.length; i++) {
             var k = keys[i];
             items.push({
-                TotalDistance: distanceValue[k].TotalDistance,
+                TotalDistance: distanceValue[k].TotalDistance.toFixed(2),
                 Activity:distanceValue[k].Activity,
                 StartDateTime:distanceValue[k].StartDateTime,
                 EndDateTime:distanceValue[k].EndDateTime,
-                UserId:distanceValue[k].UserId,
+                AvgSpeed:distanceValue[k].AvgSpeed,
+                UserId:distanceValue[k].UserId
             })
         }
          newList = items.filter(data => data.Activity == this.state.recordStatus);
@@ -101,7 +98,7 @@ export default class RecordDetails extends Component {
         renderItem={({ item }) => (
           <ListItem
             roundAvatar
-            title={`${item.TotalDistance.toFixed(2)} miles`}
+            title={`${item.TotalDistance} miles`}
 
             containerStyle={{ borderBottomWidth: 0 }}
             onPress={() => {

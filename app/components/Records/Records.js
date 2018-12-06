@@ -5,10 +5,6 @@ import { Container, Content, Form, Item } from 'native-base';
 //import { createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 
 export default class Records extends Component {
-    static navigationOptions = {
-        title: 'Activity Record Screen',
-        //headerLeft: null
-        }
     constructor() {
         super();
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })

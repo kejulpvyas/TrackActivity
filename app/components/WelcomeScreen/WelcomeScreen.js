@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Picker, Button } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Picker, Button,TouchableOpacity,AsyncStorage } from 'react-native';
 import firebase from 'firebase';
 import { Container, Content, Header, Form, Input, Item, Label } from 'native-base';
 import { withNavigation } from 'react-navigation';
 
 class WelcomeScreen extends Component {
-
-    static navigationOptions = {
-        title: 'Welcome Screen',
-        headerLeft: null
-    }
-
+    static navigationOptions = ({ navigation }) => {
+        const params = navigation.state.params || {};
+    let headerRight =(
+       <TouchableOpacity onPress={params.logout}>
+<Text>Logout</Text>
+       </TouchableOpacity>
+    )
+        return {
+          headerRight
+        };
+      };
     constructor(props) {
         super(props);
         this.state = ({
@@ -34,7 +39,13 @@ class WelcomeScreen extends Component {
             UID:uid
         })
     } 
-    
+    componentDidMount(){
+        this.props.navigation.setParams({logout:this._logout.bind(this)});
+    }
+    _logout(){
+       AsyncStorage.removeItem('app_token')
+       this.props.navigation.navigate('Login')
+    }
     render(){
         return(  
            
@@ -58,7 +69,7 @@ class WelcomeScreen extends Component {
           }}
                 />
                 </View>
-                    <Text>What you want to track ? {this.state.trackSelection}</Text>
+                    <Text>What do you want to track ? {this.state.trackSelection}</Text>
                     <Button 
                     title="Start Activity"
                     color="#841584"

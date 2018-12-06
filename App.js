@@ -25,24 +25,48 @@ const appNavigator = createStackNavigator({
 
   Login: {
     screen: Login,
+    navigationOptions:  {
+      title: 'Login',
+      headerLeft: null
+    }
   },
   SignUp: {
     screen: SignUp,
+    navigationOptions:  {
+      title: 'Sign UP',
+      headerLeft: null
+    }
   },
   WelcomeScreen: {
     screen: WelcomeScreen,
+    navigationOptions:  {
+      title: 'Welcome Screen',
+      headerLeft: null
+    }
   },
   Activity: {
     screen: Activity,
+    navigationOptions:  {
+      title: 'Activities',
+    }
   },
   Records: {
     screen: Records,
+    navigationOptions:  {
+      title: 'Activity Records',
+    }
   },
   RecordDetails:{
     screen: RecordDetails,
+    navigationOptions:  {
+      title: 'Activity Record Details',
+    }
   },
   ListDetails:{
     screen: ListDetails,
+    navigationOptions:  {
+      title: 'Activity Record Details',
+    }
   }
 }, {
   initialRouteName: 'Login',
