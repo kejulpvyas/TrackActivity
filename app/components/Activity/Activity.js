@@ -292,7 +292,7 @@ onLapPress() {
         <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.bubble, styles.btn]}>
         <Text style={styles.bottomBarContent}>
-        Current Speed : {(this.state.speed)} mph
+        Current Speed : {(this.state.speed) ? this.state.speed : 0} mph
         </Text>
         </TouchableOpacity>
         </View>

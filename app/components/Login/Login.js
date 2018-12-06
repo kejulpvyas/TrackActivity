@@ -10,8 +10,8 @@ export default class Login extends Component {
 constructor(props){
     super(props);
     this.state = ({
-      Email: 'pathiksharma@gmail.com',
-      Password:'password'
+      Email: '',
+      Password:''
   })
   }  
 
@@ -73,7 +73,6 @@ constructor(props){
               <Label>Email</Label>
               <Input autoCorrect={false}
                 autoCapitalize="none"
-                value="pathiksharma@gmail.com"
                 onChangeText={(Email) => this.setState({Email})} />
             </Item>
             <Item floatingLabel>
@@ -82,7 +81,6 @@ constructor(props){
                 secureTextEntry={true}
                 autoCorrect={false}
                 autoCapitalize="none"
-                value="password"
                   onChangeText={(Password) => this.setState({Password})}
                 />
             </Item>
