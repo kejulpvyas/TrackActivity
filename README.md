@@ -10,6 +10,8 @@ Database and backend SDK : Firebase
 
 OS : macOS
 
+# How to Run
+
 User needs to install Node and watchman first, then user can install react native cli.
 
 To run the project user has to first navigate to project directory.
