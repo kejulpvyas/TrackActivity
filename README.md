@@ -2,7 +2,7 @@
 
 In this Application, User can track of its activity details based on user input. For example, if user select to track running activity then application display user's current position on map along with the total covered distance and current speed of the user.
 
-# Prerequisites
+## Prerequisites
 
 IDE : Visual Studio Code, XCode
 
@@ -10,7 +10,7 @@ Database and backend SDK : Firebase
 
 OS : macOS
 
-# How to Run
+## How to Run
 
 User needs to install Node and watchman first, then user can install react native cli.
 
@@ -22,4 +22,7 @@ To navigate use below command:
 
 To run the project use below command:
 
-react-native run-ios
+react-native run-ios 
+
+## Screen shots
+![project](https://user-images.githubusercontent.com/45672095/49774602-3d2d4780-fcc3-11e8-8f2d-7bda4120df27.png)
