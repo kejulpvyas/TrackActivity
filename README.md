@@ -15,7 +15,8 @@ OS : macOS
 Programming Language : React Native
 
 ## User Manual
-
+Please look at here for more information:
+[User_Manual.pdf](https://github.com/kejulpvyas/TrackActivity/files/3653546/User_Manual.pdf)
 
 ## How to Run
 
