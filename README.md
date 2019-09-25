@@ -14,6 +14,9 @@ OS : macOS
 
 Programming Language : React Native
 
+## User Manual
+
+
 ## How to Run
 
 User needs to install Node and watchman first, then install react native cli.
@@ -29,4 +32,7 @@ To run the project use below command:
 react-native run-ios 
 
 ## Screen shots
-![project](https://user-images.githubusercontent.com/45672095/49774602-3d2d4780-fcc3-11e8-8f2d-7bda4120df27.png)
+![ReactProject](https://user-images.githubusercontent.com/45672095/65617498-d4316a80-df8a-11e9-8eeb-97556f84ff5c.png)
+
+
+
