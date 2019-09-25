@@ -10,6 +10,8 @@ Database and backend SDK : Firebase
 
 OS : macOS
 
+Programming Language : React Native
+
 ## How to Run
 
 User needs to install Node and watchman first, then user can install react native cli.
