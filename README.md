@@ -1,6 +1,8 @@
 # TrackActivity
 
-In this Application, User can track of its activity details based on user input. For example, if user select to track running activity then application display user's current position on map along with the total covered distance and current speed of the user.
+▪ An iOS mobile application using React Native to improve user’s fitness that allows users to track their activities such as running, driving, and walking along with the access of Firebase Realtime Database services to store user’s session and data securely.
+▪ Integrated React Native Geolocation service to display GPS coordinates of user’s activities on the map.
+▪ Utilized Haversine theorem to calculate the Average Speed and the Total Distance covered using user’s Latitude and Longitude and displayed real time results on the screen.
 
 ## Prerequisites
 
@@ -14,9 +16,9 @@ Programming Language : React Native
 
 ## How to Run
 
-User needs to install Node and watchman first, then user can install react native cli.
+User needs to install Node and watchman first, then install react native cli.
 
-To run the project user has to first navigate to project directory.
+To run the project navigate to project directory.
 
 To navigate use below command:
 
